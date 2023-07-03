@@ -1,0 +1,50 @@
+﻿
+@model CarDetails
+   
+
+<div class="Values" id="Cars">
+    <div class="images">
+        <div class="images-cont">
+            <img src="@Model.imgURL" id="imgdata" style="width:100%;height:100%;object-fit:contain;" class="cartimage" data-src="@Model.imgURL">
+        </div>
+    </div>
+    <div class="info">
+        <div class="Price">
+            <p style="font-size:25px" class="carname" id="carname"> @Model.CarName </p>
+            <h3 class="cartrent">$ @Model.rental </h3>
+            <div class="more-info">
+                <button class="info-btn"><i class="fa-solid fa-angle-down"></i></button>
+                <p>More Info</p>
+            </div>
+        </div>
+        <div class="select">
+            <input type="submit" name="select" class="select-btn" id="car-@Model.Id" value="Add To Cart" />
+            <input type="hidden" class="cartid" value="@Model.Id" />
+            <input id="cars" type="number" name="passenger" class="select-passenger" value="1" />
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#car-@Model.Id').on('click',function (){
+        event.preventDefault();
+        var number = $('#cars').val();
+        var data = {
+            id: @Model.Id,
+            range: number
+        };
+        
+        $.ajax({
+            url: '/Manage/AddToCart',
+            method: 'POST',
+            data: data,
+            success: function (response) {
+                window.location.reload()
+            },
+            error: function (xhr, status, error) {
+                alert("Unable To Add")
+            }
+        });
+        
+    });
+</script>

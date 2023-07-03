@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+    IEnumerable<CarDetails>? cardetails = ViewData["CarInfo"] as IEnumerable<CarDetails>;
+}
+
+
+<div class="cards">
+    BOOK | YOURS | NOW
+</div>
+@foreach (var item in cardetails)
+{
+    <div class="Values">
+        <div class="images">
+            <div class="images-cont">
+            </div>
+        </div>
+        <div class="info">
+            <form class="Price" asp-controller="Home" asp-action="form1" method="post">
+                <p><input type="text" id="edit-name" value="@item.CarName" asp-for="@item.CarName"> </p>
+                <h3><input type="text" id="edit-rent" value="@item.rental" asp-for="@item.rental"></h3>
+                <input type="hidden" value="@item.Id" asp-for="@item.Id"/>
+                <input type="submit" value="Save" style="width:20px; height:10px;"/>
+                <div class="more-info">
+                    <button class="info-btn"><i class="fa-solid fa-angle-down"></i></button>
+                    <p>More Info</p>
+                </div>
+            </form>
+            <div class="select">
+                <input type="submit" name="select" class="select-btn" value="Select" />
+                <input type="number" name="passenger" class="select-passenger" value="1" />
+            </div>
+        </div>
+    </div>
+}

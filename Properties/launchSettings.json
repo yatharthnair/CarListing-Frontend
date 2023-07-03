@@ -1,0 +1,29 @@
+{
+  "profiles": {
+    "Car_Listing": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:7290/Home/Login",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7290;http://localhost:5070"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:20171",
+      "sslPort": 44337
+    }
+  }
+}

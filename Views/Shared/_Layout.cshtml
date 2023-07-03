@@ -1,0 +1,205 @@
+﻿@model CarDetails
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Car_Listing</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin asp-append-version="true">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e8390de748.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header style="width:100%">
+        <div class="dash">
+            <div class="sidebar">
+                <div class="side-head">
+                    <i style="display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 700;" class="fa-solid fa-infinity"><p style="padding-left: 12px;">RENT</p><p style="color: rgb(178, 17, 17);">IT</p></i>
+                </div>
+                <div class="side-logo">
+                    <div class="dash-img">
+                    </div>
+                    <div class="name" id="role" style="color: #ffff;font-size: 15px; font-weight: bold;">Welcome</div>
+                    <button class="edit-btn">Edit</button>
+                </div>
+                <div class="side-list">
+                    <ul style="list-style: none; display: flex;flex-direction: column;gap: 15px;">
+                        <a class="sidebar-items" style="text-decoration: none;color: white;" asp-action="Index" asp-controller="Home">
+                        <li id="listing"><i class="fa-solid fa-bars"></i>Listings</li>
+                        </a>
+                        <li class="sidebar-items" id="add-users"><i class="fa-solid fa-plus"></i>Add Users</li>
+                        <a class="sidebar-items" style="text-decoration: none;color: white;" asp-action="edit" asp-controller="Home">
+                        <li id="manage"><i class="fa-solid fa-list-check"></i>Manage Listings</li></a>
+                        <a style="text-decoration:none; color:white;" asp-action="Login" asp-controller="Home">
+                        <li class="sidebar-items"><i class="fa-solid fa-right-from-bracket"></i>Log out</li></a>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="navbar" id="navbar">
+                    <div class="cont-head">
+                        <span style="color: white;
+                font-size: 1.5rem;
+                text-transform: uppercase;
+                font-weight: 700;">Listings</span>
+                    </div>
+                    <div class="search-bar">
+                        <i style="font-size: 14px; color: white;" class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search" name="search" class="search" placeholder="Search something.." />
+                    </div>
+                    <div class="upgrade">
+                        <button id="up-btn" class="up-btn"><i class="fa-solid fa-plus"></i> &nbsp; Add Cars</button>
+                        <span class="noti">
+                            <a style="color:white;cursor:pointer;" asp-action="Cart" asp-controller="Manage"><i class="fa-solid fa-cart-shopping"></i></a>
+                            <span style="background-color: white; position: absolute;height: 23px;width: 23px;top: -15px;border-radius: 50%;">
+                                <p id="cartcount" style="font-size: 10px;color: black;position: absolute;top: 5px;left: 8px;font-weight: 900;"></p>
+                            </span>
+                        </span>
+                    </div>
+                    <div id="ovrly"></div>
+                    <div id="login" style="top: 100px;background-color: black;border: 1px solid white; gap: 10px;opacity: 0.8">
+                        <button id="cross" style="color:white">X</button>
+                        <h1 style="color:white">Enter Details</h1>
+                        <form asp-controller="Home" asp-action="AddCar" enctype="multipart/form-data" method="post" id="add-form" style="position:relative;padding-top:20px;" novalidate="novalidate">
+                            <input type="text" placeholder="Model" id="carname" class="txt" asp-for="CarName"/>
+                            <input type="text" placeholder="Rental" id="rental" class="pswd" asp-for="rental" />
+                            <input type="text" placeholder="Condition" id="condition" class="pswd" asp-for="condition" />
+                            <input type="text" placeholder="Mileage" id="mileage" class="pswd" asp-for="Mileage" />
+                            <div style="display:flex; padding-top:13px; width:55%;">
+                            <input type="file" id="image" asp-for="formFile" style="flex:1;"/><label id="fileupload" style="width:20px;height:20px;background-color:transparent;color:white;flex:1;"></label>
+                            </div>
+                            <input type="submit" value="Submit" id="btn" style="color: black;font-weight: 600;border-radius: 8px;padding: 7px; position: absolute;bottom: 3px;right: 2px;" />
+                        </form>
+                        
+                    </div>
+                </div>
+                <div class="data">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </header>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>        
+        $(window).on('load', function () {
+
+            var url = $(location).attr('href');
+            if (url == 'https://localhost:7290/') {
+                $('#listing').css('background-color', '#910f0f')
+            }
+
+            else if (url == 'https://localhost:7290/Home/edit') {
+                $('#manage').css('background-color', '#910f0f')
+            }
+            event.preventDefault();
+            var token = sessionStorage.getItem('token');
+            if (token === null) {
+                alert("Please Login First")
+                $(location).attr('href', 'https://localhost:7290/Home/Login')
+            }
+            $.ajax({
+                url: '/Manage/Count',
+                success: function (data) { $('#cartcount').text(data); },
+                statusCode: {
+                    404: function (content) { alert('cannot find resource'); },
+                    500: function (content) { alert('internal server error'); }
+                },
+                error: function (req, status, errorObj) {
+                }
+            });
+                
+            try {
+                $("#up-btn").click(function () {
+                    "use strict";
+                    window.$("#ovrly").fadeIn();
+                    window.$("#login").show();
+                    window.$("#login").animate({ top: "100" });
+                });
+                $("#ovrly").click(function () {
+                    "use strict";
+                    window.$("#ovrly").hide();
+                    window.$("#login").hide();
+                    window.$("#login").css("top", "-310px");
+                });
+                $("#cross").click(function () {
+                    "use strict";
+                    window.$("#ovrly").hide();
+                    window.$("#login").hide();
+                    window.$("#login").css("top", "-310px");
+                });
+      
+                var payload64 = token.split(".")[1];
+                var payload = decodeURIComponent(
+                    atob(payload64).split("").map(function (c) {
+                        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                    }).join("")
+                );
+                var decoded = JSON.parse(payload);
+                var role = decoded.Role;
+                if (role === "Admin") {
+                    $('#role').text("Admin");
+                }
+                if (role === "CLient") {
+                    $('#role').text("Client");
+                    $('#add-users').css("display", "none");
+                    $('#manage').css("display", "none");
+                }
+                if (role === "User") {
+                    $('#role').text("User");
+                    $('#add-users').css("display", "none");
+                    $('#manage').css("display", "none");
+                    $('#up-btn').css("display", "none");
+                }
+                window.onscroll = function(){
+                    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                        $('#navbar').css("top","-105px")
+                        
+                       
+                    }
+                    else {
+                        $('#navbar').css("top", "0")
+                    }
+                }
+            }
+                catch (ex) {
+
+                }
+                $('#image').on('change',function (){
+                var file = $('#image')[0].files[0].name
+                $('#fileupload').text(file);
+            });
+            $('#search').on('keyup',function (){
+                var search = $('#search').val().toLowerCase();
+                $(".Values").each(function () {
+                    
+                    if ($(this).text().toLowerCase().search(search) > -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                //$.ajax({
+                //    url: '/Home/Index',
+                //    data:{ SearchItem: search},
+                //    success: console.log("Done"),
+                //    statusCode: {
+                //        404: function (content) { alert('cannot find resource'); },
+                //        500: function (content) { alert('internal server error'); }
+                //    },
+                //    error: function (req, status, errorObj) {}
+                //});
+            })
+        });
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

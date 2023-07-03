@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+    IEnumerable<CarDetails>? cardetails = ViewData["CarInfo"] as IEnumerable<CarDetails>;
+
+}
+
+<div class="cards">
+    BOOK | YOURS | NOW
+</div>
+@foreach(var item in cardetails)
+{
+    @await Html.PartialAsync("components/_CarItem", item);
+}
+

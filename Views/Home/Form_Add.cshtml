@@ -1,0 +1,45 @@
+﻿@model Car_Listing.Models.CarDetails
+@{
+    Layout = null;
+}
+
+<h4>CarDetails</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Form_Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CarName" class="control-label"></label>
+                <input asp-for="CarName" class="form-control" />
+                <span asp-validation-for="CarName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mileage" class="control-label"></label>
+                <input asp-for="Mileage" class="form-control" />
+                <span asp-validation-for="Mileage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="condition" class="control-label"></label>
+                <input asp-for="condition" class="form-control" />
+                <span asp-validation-for="condition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rental" class="control-label"></label>
+                <input asp-for="rental" class="form-control" />
+                <span asp-validation-for="rental" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

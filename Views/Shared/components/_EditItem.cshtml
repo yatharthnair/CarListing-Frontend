@@ -1,0 +1,53 @@
+﻿
+@model CarDetails
+
+<div class="Values">
+    <div class="images">
+        <div class="images-cont">
+            <img src="@Model.imgURL" style="width:100%;height:100%;object-fit:contain;">
+        </div>
+    </div>
+    <div class="info">
+        <div class="Price">
+            <p> @Model.CarName </p>
+            <h3>$ @Model.rental </h3>
+            <div class="more-info">
+                <button class="info-btn"><i class="fa-solid fa-angle-down"></i></button>
+                <p>More Info</p>
+            </div>
+        </div>
+        <div class="select">
+            <div style="width: 40px; display: flex; gap: 20px;">
+                <a style="color:white" asp-action="form2" asp-controller="Home" asp-route-id = "@Model.Id">
+                    <i class="fa-solid fa-pen-to-square" style="font-size:25px"></i>
+                </a>
+                <i data-value="@Model.Id" id="@Model.Id-delete" class="fa-solid fa-trash" style="font-size:25px;cursor:pointer"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>)
+    $('#@Model.Id-delete').on('click', function () {
+        event.preventDefault();
+        if(confirm("Are you sure?")){
+            var data = {
+            id : @Model.Id
+            };
+            $.ajax({
+            url: '/Home/delete',
+            method: 'DELETE',
+            data: data,
+            success: function (response) {
+                $(location).attr('href', 'https://localhost:7290')
+            },
+            error: function (xhr, status, error) {
+                alert("Unable To Delete")
+            }
+        });
+        }
+        else{
+            window.location.reload()
+        }
+    });
+</script>

@@ -1,0 +1,69 @@
+﻿@model CarDetails
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+    CarDetails item = ViewData["EditItem"] as CarDetails;
+}
+
+<div class="cards">
+    BOOK | YOURS | NOW
+</div>
+<div class="Values">
+    <div class="images">
+        <div class="images-cont">
+            <img src="@item.imgURL" data-value="@item.image" style="width:100%;height:100%;object-fit:contain;">
+        </div>
+    </div>
+    <div class="info">
+        <form id="myForm-@item.Id" class="Price">
+            <p>
+                <input type="text" style="height: 25px;background-color: black;color: white;border: none;
+                    font-size: 25px;" id="edit-name-@item.CarName" value="@item.CarName">
+            </p>
+            <h3>
+                <input type="text" style="height: 100%; background-color: black;color: white;font-size: 3rem;
+                    border: none;" id="edit-rent-@item.rental" value="@item.rental">
+            </h3>
+            <input type="submit" value="Save" style="width: 15%;height: 12%;border-radius: 10px;" />
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myForm-@item.Id').submit(function (e) {
+            e.preventDefault();
+
+            var carName = '@item.CarName'
+            var rental = $('#edit-rent-@item.rental').val()
+            var id = @item.Id
+                var mileage = @item.Mileage
+                var condition = '@item.condition'
+
+            var data = {
+                CarName: carName,
+                rental: rental,
+                Id: id,
+                Mileage: mileage,
+                condition: condition
+            };
+
+            $.ajax({
+                url: '/Home/Form2',
+                method: 'PUT',
+                data: data,
+                success: function (response) {
+                    alert("Edited")
+                    $(location).attr('href', 'https://localhost:7290')
+                },
+                error: function (xhr, status, error) {
+                    alert("Unable To Edit")
+                }
+            });
+        });
+
+    });
+</script>
+
+

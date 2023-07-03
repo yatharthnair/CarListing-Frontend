@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+    IEnumerable<CarDetails>? cardetails = ViewData["CarInfo"] as IEnumerable<CarDetails>;
+}
+
+
+<div class="cards">
+    BOOK | YOURS | NOW
+</div>
+@foreach (var item in cardetails)
+{
+    @await Html.PartialAsync("components/_EditItem", item);
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        $('#delete').on("click", function () {
+
+            //var id = $('#delete-val').attr('data-value');
+            alert("hello");
+            //var url = "/Home/delete/" + id;
+            //$.ajax({
+            //    url: url,
+            //    method: 'DELETE',
+            //    success: function (response) {
+            //        location.reload();
+            //    },
+            //    error: function (xhr, status, error) {
+            //        alert("Error")
+            //    }
+            //});
+        });
+</script>

@@ -1,0 +1,60 @@
+﻿@model CarDetails
+
+<div class="Values">
+    <div class="images">
+        <div class="images-cont">
+            <img src="@Model.imgURL" data-value="@Model.image" style="width:100%;height:100%;object-fit:contain;">
+        </div>
+    </div>
+    <div class="info">
+        <form id="myForm-@Model.Id" class="Price">
+            <p>
+                <input type="text" style="height: 25px;background-color: black;color: white;border: none;
+                    font-size: 25px;" id="edit-name-@Model.CarName" value="@Model.CarName">
+            </p>
+            <h3>
+                <input type="text" style="height: 100%; background-color: black;color: white;font-size: 3rem;
+                    border: none;" id="edit-rent-@Model.rental" value="@Model.rental">
+            </h3>
+            <input type="submit" value="Save" style="width: 15%;height: 12%;border-radius: 10px;" />
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myForm-@Model.Id').submit(function (e) {
+            e.preventDefault();
+
+            var carName = '@Model.CarName'
+            var rental = $('#edit-rent-@Model.rental').val()
+            var id = @Model.Id
+            var mileage = @Model.Mileage
+            var condition = '@Model.condition'
+
+            var data = {
+                CarName: carName,
+                rental: rental,
+                Id: id,
+                Mileage: mileage,
+                condition: condition
+            };
+
+            $.ajax({
+                url: '/Home/Form2',
+                method: 'PUT',
+                data: data,
+                success: function (response) {
+                    alert("Edited")
+                    $(location).attr('href', 'https://localhost:7290')
+                },
+                error: function (xhr, status, error) {
+                    alert("Unable To Edit")
+                }
+            });
+        });
+
+    });
+</script>
+
